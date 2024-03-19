@@ -6,7 +6,7 @@ from typing import List, Dict, Union
 app = Flask(__name__)
 app.json.sort_keys = False
 
-def emulate_data() -> List[Dict[str, Union[int, str, List[str, Union[str, int]]]]]:
+def emulate_data() -> List[Dict[str, Union[int, str, List[Union[str, int]]]]]:
     data = []
     number_of_power_stations = 10
 
