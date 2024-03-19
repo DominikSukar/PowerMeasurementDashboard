@@ -1,12 +1,12 @@
 from flask import Flask, jsonify
 import random
 from datetime import datetime
+from typing import List, Dict, Union
 
 app = Flask(__name__)
 app.json.sort_keys = False
 
-@app.route("/")
-def emulate_data():
+def emulate_data() -> List[Dict[str, Union[int, str, List[str, Union[str, int]]]]]:
     data = []
     number_of_power_stations = 10
 
@@ -31,6 +31,11 @@ def emulate_data():
         insertion["summarizedMeasurements"] = summarized_measurements
         data.append(insertion)
 
+    return data
+
+@app.route("/")
+def main():
+    data = emulate_data()
     return jsonify(data)
 
 
