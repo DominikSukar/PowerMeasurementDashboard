@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
-import Management from './pages/Management'
+import Settings from './pages/Settings'
 import Header from './components/Header'
 import Measurements from './components/Measurements'
 
@@ -20,7 +20,7 @@ function App() {
             <Routes>
               <Route path="/" Component={Home}></Route>
               <Route path="/measurements" Component={Measurements}></Route>
-              <Route path="/management" Component={Management}></Route>
+              <Route path="/settings" Component={Settings}></Route>
             </Routes>
           </div>
         </div>  

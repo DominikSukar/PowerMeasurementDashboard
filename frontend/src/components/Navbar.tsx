@@ -27,8 +27,8 @@ const Navbar = () => {
         <div className='flex flex-col'>
             <Logo></Logo>
             <Nav name={"Home"} currentPath={currentPath} changeCurrentPath={changeCurrentPath} path="/"></Nav>
-            <Nav name={"Measurements"} currentPath={currentPath} changeCurrentPath={changeCurrentPath} path="/measurements"></Nav>
-            <Nav name={"Management"} currentPath={currentPath} changeCurrentPath={changeCurrentPath} path="/management"></Nav>
+            <Nav name={"Data"} currentPath={currentPath} changeCurrentPath={changeCurrentPath} path="/measurements"></Nav>
+            <Nav name={"Settings"} currentPath={currentPath} changeCurrentPath={changeCurrentPath} path="/settings"></Nav>
         </div>
     </div>
   )
