@@ -6,7 +6,7 @@ class PowerStations(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.name}, ID={self.id}"
+        return f"{self.name}, {self.id}"
 
 class Circuits(models.Model):
     id = models.AutoField(primary_key=True)
@@ -15,13 +15,14 @@ class Circuits(models.Model):
     connected_object = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.circuit_name}, Object={self.connected_object}, PS={self.power_station_id}"
+        return f"{self.circuit_name}, {self.power_station_id}"
 
 class Measurements(models.Model):
     id = models.AutoField(primary_key=True)
-    date = models.DateField()
+    date = models.DateTimeField()
     circuit_id = models.ForeignKey(Circuits, on_delete=models.CASCADE)
     measurement = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.measurement}W ID={self.measurement_id}"
+        return f"{self.measurement}W {self.circuit_id}"
+    
