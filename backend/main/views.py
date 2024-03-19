@@ -45,7 +45,6 @@ def get_latest_data(request):
 
     for measurement in measurements:
         power_stations[measurement.circuit_id.power_station_id.name].append({
-        'id': measurement.id,
         'date': measurement.date,
         'measurement': measurement.measurement,
         'circuit_id': measurement.circuit_id.circuit_name,
