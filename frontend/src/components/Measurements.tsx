@@ -1,27 +1,26 @@
-import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 interface Measurement {
-  name: string;
+  id: number;
   date: Date;
-  value: number;
-}
-interface powerStation {
-  name: string;
-  summarizedMeasurements: number;
-  measurements: Measurement[];
+  measurement: string;
+  circuit_id: string;
 }
 
-const StationCard = ({station}: {station: powerStation}) => {
+interface PowerStation {
+  [powerStationName: string]: Measurement[];
+}
+
+const StationCard = ({powerStation, measurements}: {powerStation: string, measurements: Measurement}) => {
   return (
     <div className="border rounded-lg shadow-md p-4 m-4 bg-white">
-      <div className='text-lg font-bold'>{station.name}</div>
-      <div>Power sum: {station.summarizedMeasurements} [W]</div>
+      <div className='font-bold'>{powerStation}</div>
       <br></br>
-        {station.measurements.map((measurement, index) => (
+        {measurements.map((measurement, index) => (
           <div key={index} className='flex justify-around'>
-            <div>{measurement.name}</div>
-            <div>{measurement.value} [W]</div>
+            <div className='text-xs'>{measurement.circuit_id}</div>
+            <div className='text-xs'>{measurement.measurement}W</div>
           </div>
         ))}
     </div>
@@ -29,48 +28,58 @@ const StationCard = ({station}: {station: powerStation}) => {
 }
 
 const Measurements = () => {
-  const [data, setData] = useState<powerStation[]>([
-    {
-      name: "Power Station 1",
-      summarizedMeasurements: 51+65,
-      measurements: [
-        {
-          name: "Circuit 1",
-          date: new Date(2024, 3, 18, 10, 0, 0),
-          value: 51,
-        },
-        {
-          name: "Circuit 2",
-          date: new Date(2024, 3, 18, 10, 0, 0),
-          value: 65,
-        },
-      ],
-    },
-    {
-      name: "Power Station 2",
-      summarizedMeasurements: 43+123,
-      measurements: [
-        {
-          name: "Circuit 1",
-          date: new Date(2024, 3, 18, 10, 0, 0),
-          value: 43,
-        },
-        {
-          name: "Circuit 2",
-          date: new Date(2024, 3, 18, 10, 0, 0),
-          value: 123,
-        },
-      ],
-    }
-  ])
+  const [data, setData] = useState<PowerStation>({
+    "Power station 1": [
+      {
+          "id": 60497,
+          "date": new Date(2024, 3, 18, 10, 0, 0),
+          "measurement": "5149",
+          "circuit_id": "Circuit 1"
+      },
+      {
+        "id": 60497,
+        "date": new Date(2024, 3, 18, 10, 0, 0),
+        "measurement": "5149",
+        "circuit_id": "Circuit 2"
+      },
+    ],
+  "Power station 2": [
+      {
+          "id": 60497,
+          "date": new Date(2024, 3, 18, 10, 0, 0),
+          "measurement": "3213",
+          "circuit_id": "Circuit 1"
+      },
+      {
+        "id": 60497,
+        "date": new Date(2024, 3, 18, 10, 0, 0),
+        "measurement": "42141",
+        "circuit_id": "Circuit 2"
+      },
+    ],
+
+  })
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/get_latest_data/')
+    .then(function (response) {
+      setData(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });
+  }, [])
+  
+
   return (
     <div>
       <div>Measurements</div>
-      <div className='flex'>
-        {data.map((station, index) => (
-          <div key={index}>
-            <StationCard station={station}></StationCard>
-          </div>
+      <div className='grid grid-cols-6'>
+        {Object.entries(data).map(([powerStation, measurements]) => (
+            <StationCard powerStation={powerStation} measurements={measurements}></StationCard>
         ))}
       </div>
     </div>

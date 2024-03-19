@@ -23,7 +23,7 @@ const Navbar = () => {
   const [currentPath, changeCurrentPath] = useState<string>("/")
 
   return (
-    <div className="absolute left-0 top-0 h-full w-64 bg-1">
+    <div className="fixed left-0 top-0 h-full w-64 bg-1">
         <div className='flex flex-col'>
             <Logo></Logo>
             <Nav name={"Home"} currentPath={currentPath} changeCurrentPath={changeCurrentPath} path="/"></Nav>

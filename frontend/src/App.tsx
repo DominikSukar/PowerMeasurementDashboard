@@ -13,15 +13,17 @@ function App() {
   return (
     <div>
       <BrowserRouter>
+        <div>
           <Navbar></Navbar>
           <Header></Header>
-          <div className='absolute left-64 top-12 bottom-0 right-0 bg-slate-100'>
+          <div className='absolute left-64 top-12 bottom-0 right-0 bg-slate-100 overflow-auto'>
             <Routes>
               <Route path="/" Component={Home}></Route>
               <Route path="/measurements" Component={Measurements}></Route>
               <Route path="/management" Component={Management}></Route>
             </Routes>
           </div>
+        </div>  
       </BrowserRouter>
     </div>
   )
