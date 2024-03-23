@@ -8,10 +8,10 @@ app.json.sort_keys = False
 
 def emulate_data() -> List[Dict[str, Union[int, str, List[Union[str, int]]]]]:
     data = []
-    number_of_power_stations = 10
+    number_of_power_stations = 2
 
     for index in range(number_of_power_stations):
-        number_of_circuits = 20 + (20*(index + 1)//(number_of_power_stations + 1))
+        number_of_circuits = 5 + (20*(index + 1)//(number_of_power_stations + 1))
         summarized_measurements = 0
         insertion = {
             "name": f"Power Station {index+1}",
@@ -20,7 +20,7 @@ def emulate_data() -> List[Dict[str, Union[int, str, List[Union[str, int]]]]]:
             "measurements": [],
         }
         for index2 in range(number_of_circuits):
-            value = random.randint(0, 10000)
+            value = random.randint(0, 5000)
             summarized_measurements += value
             insertion["measurements"].append({
                 "name": f"Circuit {index2+1}",
