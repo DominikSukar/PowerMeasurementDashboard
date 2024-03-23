@@ -10,6 +10,7 @@ ALLOWED_HOSTS = ['localhost']
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5174',
+    'http://localhost',
 ]
 
 USE_TZ = False

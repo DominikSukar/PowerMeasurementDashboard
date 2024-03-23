@@ -25,15 +25,20 @@ def insert_data(data: list) -> None:
         summarized_measurements = data_['summarizedMeasurements']
         number_of_circuits = data_['numberofCircuits']
 
-        power_station_object, ps_exists = PowerStations.objects.get_or_create(name=power_station_name)
+        power_station_object, ps_created = PowerStations.objects.get_or_create(name=power_station_name)
+        if ps_created:
+            print(f"New power station created {power_station_name}")
+
 
         for circuit in data_['measurements']:
             circuit_name = circuit['name']
-            date = datetime.strptime(circuit['date'], '%a, %d %b %Y %H:%M:%S %Z')
-            value = circuit['value']
+            m_date = datetime.strptime(circuit['date'], '%a, %d %b %Y %H:%M:%S %Z')
+            m_value = circuit['value']
 
-            circuit_object, c_exists = Circuits.objects.get_or_create(circuit_name=circuit_name, power_station_id=power_station_object)
-            measurement_object = Measurements.objects.create(circuit_id=circuit_object, date=date, measurement=value)
+            circuit_object, c_created = Circuits.objects.get_or_create(circuit_name=circuit_name, power_station_id=power_station_object)
+            if c_created:
+                print(f"New circuit created {circuit_name}, {power_station_name}")
+            measurement_object = Measurements.objects.create(circuit_id=circuit_object, date=m_date, measurement=m_value)
 # API
 @api_view(['GET'])
 def get_latest_data(request):
@@ -52,3 +57,32 @@ def get_latest_data(request):
     
 
     return Response(power_stations, status=200)
+
+@api_view(['GET'])
+def get_circuit_data(request):
+    circuit = request.GET.get('circuit', '')
+    powerstation = request.GET.get('powerstation', '')
+
+    try:
+        date_from = datetime.strptime(request.GET.get('date_from', ''), "%Y-%m-%dT%H:%M")
+        date_to = datetime.strptime(request.GET.get('date_to', ''), "%Y-%m-%dT%H:%M")
+    except ValueError:
+        return Response([], status=404)
+
+    data = []
+
+    try:
+        power_station_id = PowerStations.objects.get(name=powerstation)
+        circuit_id = Circuits.objects.get(circuit_name=circuit, power_station_id=power_station_id)
+    except PowerStations.DoesNotExist or Circuits.DoesNotExist:
+        return Response([], status=404)
+    measurements = Measurements.objects.filter(circuit_id=circuit_id, date__range=(date_from, date_to))
+
+    for measurement in measurements:
+        data.append({
+            "date": measurement.date,
+            "value": measurement.measurement
+        })
+    
+
+    return Response(data, status=200)
