@@ -33,17 +33,21 @@ const Measurements = () => {
   const [data, setData] = useState<PowerStation|null>(null)
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      axios.get('http://localhost:8000/get_latest_data/')
-      .then(function (response) {
-        setData(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-    }, 1000);
-    return () => clearInterval(interval);
 
+  const fetchData = async () => {
+    axios.get('http://localhost:8000/get_latest_data/')
+    .then(function (response) {
+      setData(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  };
+
+
+  fetchData();
+  const interval = setInterval(fetchData, 10000);
+  return () => clearInterval(interval);
   }, [])
   
 
