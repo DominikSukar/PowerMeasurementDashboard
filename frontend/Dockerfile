@@ -1,15 +1,19 @@
-FROM node:18-alpine
+FROM node:16.3.0-alpine AS production
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json /app
 
-RUN npm install --production
+RUN npm install
 
-RUN npm i vite
+COPY . /app
 
-COPY . .
+RUN npm run build
 
-EXPOSE 5173
+FROM nginx:alpine
 
-CMD [ "npm", "run", "dev"]
+COPY --from=production /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

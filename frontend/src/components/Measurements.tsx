@@ -12,7 +12,7 @@ interface PowerStation {
   [powerStationName: string]: Measurement[];
 }
 
-const StationCard = ({powerStation, measurements}: {powerStation: string, measurements: Measurement}) => {
+const StationCard = ({powerStation, measurements}: {powerStation: string, measurements: Measurement[]}) => {
   return (
     <div className="border rounded-lg shadow-md p-4 m-4 bg-white">
       <div className='font-semibold'>{powerStation}</div>
@@ -30,7 +30,7 @@ const StationCard = ({powerStation, measurements}: {powerStation: string, measur
 }
 
 const Measurements = () => {
-  const [data, setData] = useState<PowerStation>([])
+  const [data, setData] = useState<PowerStation|null>(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -50,7 +50,7 @@ const Measurements = () => {
   return (
     <div>
       <div className='grid grid-cols-5'>
-        {Object.entries(data).map(([powerStation, measurements]) => (
+        {data && Object.entries(data).map(([powerStation, measurements]) => (
             <StationCard powerStation={powerStation} measurements={measurements}></StationCard>
         ))}
       </div>

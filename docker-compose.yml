@@ -1,4 +1,4 @@
-version: '1.0'
+version: '2.0'
 
 services:
   postgresql:
@@ -14,15 +14,24 @@ services:
       - 'postgresql_data:/bitnami/postgresql'
       - ./database:/docker-entrypoint-initdb.d
   auth:
-    container_name: auth_postgresql
-    image: bitnami/keycloak:23
-    environment:
-     - KEYCLOAK_ADMIN=project
-     - KEYCLOAK_ADMIN_PASSWORD=project
+    container_name: auth-keycloak
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      - KEYCLOAK_ADMIN=project
+      - KEYCLOAK_ADMIN_PASSWORD=project
     depends_on:
       - postgresql
+  frontend:
+    container_name: frontend_react
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
 
   emulator:
     container_name: emulator_flask
@@ -31,11 +40,6 @@ services:
      - "5000:5000"
     volumes:
     - ./emulator:/app
-  frontend:
-    container_name: frontend_react
-    build: ./frontend
-    ports:
-      - "5173:5173"
 volumes:
   postgresql_data:
     driver: local
