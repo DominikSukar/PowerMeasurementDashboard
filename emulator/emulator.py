@@ -3,6 +3,8 @@ import random
 from datetime import datetime
 from typing import List, Dict, Union
 
+import argparse
+
 app = Flask(__name__)
 app.json.sort_keys = False
 
@@ -40,4 +42,8 @@ def main():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--port', type=int, help='Port number')
+
+    args = parser.parse_args()
+    app.run(host='0.0.0.0', port=args.port)
