@@ -3,10 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 import Navbar from './components/Navbar'
-import Home from './pages/Home'
-import Settings from './pages/Settings'
 import Header from './components/Header'
-import Measurements from './components/Measurements'
+
+import Home from './pages/Home'
+import Measurements from './pages/Measurements'
+import Settings from './pages/Settings'
 
 import Keycloak from "keycloak-js";
 
