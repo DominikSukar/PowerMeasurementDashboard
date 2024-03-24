@@ -19,7 +19,7 @@ function App() {
   
   useEffect(() => {
     let initOptions = {
-      url: "http://localhost:8080",
+      url: "http://auth-keycloak:8080",
       realm: "PMD",
       clientId: "frontend-1",
       onLoad: "login-required",
@@ -37,14 +37,14 @@ function App() {
       console.log(kc);
       console.error("Authentication Failed", error);
     });
-
+    
     return () => {
       if (kc) {
         kc.logout();
       }
     };
   }, []);
-
+  
   if (!keycloak) {
     return (<div className="overflow-hidden h-screen w-screen">
               <img className="object-cover object-center h-full w-full" src={LoadingScreen} alt="Loading Screen" />

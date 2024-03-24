@@ -45,7 +45,6 @@ const Chart = ({modalIsOpen, setIsOpen, data}:{modalIsOpen:boolean; setIsOpen:Fu
 
         }}}
         onRequestClose={closeModal}
-        contentLabel="Example Modal"
       >
         <div className='flex content-center 2xl:h-152 xl:h-96'>
           {data ? (<Line data={data} options={options} />):
