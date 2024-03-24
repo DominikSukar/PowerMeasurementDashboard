@@ -6,7 +6,7 @@ import Navbar from './components/Navbar'
 import Header from './components/Header'
 
 import Home from './pages/Home'
-import Measurements from './pages/Measurements'
+import Measurements from './pages/Data'
 import Settings from './pages/Settings'
 
 import Keycloak from "keycloak-js";
@@ -16,7 +16,7 @@ import LoadingScreen from "./assets/LoadingScreen.jpg"
 
 function App() {
   const [keycloak, setKeycloak] = useState<Keycloak|null>(null);
-
+  
   useEffect(() => {
     let initOptions = {
       url: "http://localhost:8080",
@@ -46,9 +46,9 @@ function App() {
   }, []);
 
   if (!keycloak) {
-    return (<div style={{width: "100vw", height: "100vh", maxWidth: "100%", overflow: "hidden"}}>
-              <img src={LoadingScreen} alt="Loading Screen" style={{width: "100%", height: "100%", objectFit: "cover"}}></img>
-           </div>
+    return (<div className="overflow-hidden h-screen w-screen">
+              <img className="object-cover object-center h-full w-full" src={LoadingScreen} alt="Loading Screen" />
+            </div>
     )
   }
 
@@ -58,7 +58,7 @@ function App() {
         <div>
           <Navbar keycloak={keycloak}></Navbar>
           <Header></Header>
-          <div className='absolute left-64 top-12 bottom-0 right-0 bg-slate-100 overflow-auto'>
+          <div className='absolute left-64 top-12 bottom-0 right-0 bg-slate-200 overflow-auto'>
             <Routes>
               <Route path="/" Component={Home}></Route>
               <Route path="/measurements" Component={Measurements}></Route>

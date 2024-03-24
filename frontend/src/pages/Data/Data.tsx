@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import StationCard from './StationCard';
+
 interface Measurement {
   id: number;
   date: Date;
@@ -12,29 +14,11 @@ interface PowerStation {
   [powerStationName: string]: Measurement[];
 }
 
-const StationCard = ({powerStation, measurements}: {powerStation: string, measurements: Measurement[]}) => {
-  return (
-    <div className="border rounded-lg shadow-md p-4 m-4 bg-white">
-      <div className='font-semibold'>{powerStation}</div>
-      <br></br>
-      <div className="grid grid-cols-2" style={{ gridAutoFlow: 'row' }}>
-        {measurements.map((measurement, index) => (
-          <button type="button" key={index} className='p-2 m-1 border rounded-lg flex items-center justify-between'>
-            <div className='text-xs'>{measurement.circuit_id}</div>
-            <div className='text-xs'>{measurement.measurement}W</div>
-          </button>
-        ))}
-      </div> 
-    </div>
-  )
-}
-
 const Measurements = () => {
   const [data, setData] = useState<PowerStation|null>(null)
 
   useEffect(() => {
-
-  const fetchData = async () => {
+    const fetchData = async () => {
     axios.get('http://localhost:8000/get_latest_data/')
     .then(function (response) {
       setData(response.data);
@@ -43,11 +27,9 @@ const Measurements = () => {
       console.log(error);
     })
   };
-
-
-  fetchData();
-  const interval = setInterval(fetchData, 10000);
-  return () => clearInterval(interval);
+    fetchData();
+    const interval = setInterval(fetchData, 10000);
+    return () => clearInterval(interval);
   }, [])
   
 

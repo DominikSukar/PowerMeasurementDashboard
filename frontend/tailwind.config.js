@@ -20,6 +20,9 @@ export default {
         '8': "#ADE8F4",
         '9': "#CAF0F8",
       },
+      height: {
+        '152': '38rem',
+      },
     },
   },
   plugins: [],

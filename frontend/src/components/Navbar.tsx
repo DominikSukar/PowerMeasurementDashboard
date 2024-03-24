@@ -13,17 +13,17 @@ const Nav = ({name, path, icon}:{name: string, path: string|null, icon:string}) 
   if (path) {
     return (
       <Link to={path}>
-      <button type="button" className="flex w-full py-2 bg-1 text-white hover:bg-2 transition-colors">
-        <img src={icon} alt="Home logo" className='mr-2 ml-20'></img>
-        <div>{ name }</div>
-      </button>
-    </Link>
-    )} else {
-      return (
         <button type="button" className="flex w-full py-2 bg-1 text-white hover:bg-2 transition-colors">
           <img src={icon} alt="Home logo" className='mr-2 ml-20'></img>
           <div>{ name }</div>
         </button>
+      </Link>
+    )} else {
+      return (
+        <div className="flex w-full py-2 bg-1 text-white hover:bg-2 transition-colors">
+          <img src={icon} alt="Home logo" className='mr-2 ml-20'></img>
+          <div>{ name }</div>
+        </div>
       )
     }
 
@@ -38,7 +38,7 @@ const Navbar = ({keycloak}:{keycloak: Keycloak}) => {
             <Nav name={"Home"} icon={HomeIcon} path="/"></Nav>
             <Nav name={"Data"} icon={SettingsIcon} path="/measurements"></Nav>
             <Nav name={"Settings"} icon={DataIcon} path="/settings"></Nav>
-            <button type="button" className='absolute bottom-0 left-0 right-0' onClick={() => keycloak.logout()}>
+            <button type="button" className='absolute bottom-0 left-0 right-0 mb-4' onClick={() => keycloak.logout()}>
               <Nav name={"Logout"} icon={LogoutIcon} path={null}></Nav>
             </button>
         </div>
