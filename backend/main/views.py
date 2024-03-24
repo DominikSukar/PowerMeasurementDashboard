@@ -1,19 +1,22 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Max
+from django.core.serializers import serialize
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import PowerStations, Circuits, Measurements
+from .models import ConnectedDevices, PowerStations, Circuits, Measurements
 from datetime import datetime, timedelta
 import requests
 from urllib3.exceptions import MaxRetryError
 
+from .serializers import ConnectedDevicesSerializer
+
 
 def get_measurements():
     try:
-        data = requests.get("http://localhost:5000").json()
+        data = requests.get("http://emulator_flask_1:5000").json()
     except MaxRetryError:
         print("Host doesn't respond")
 
@@ -133,7 +136,10 @@ def get_dashboard_data(request):
         for measurement in measurements:
             combined_power_consumption_yesterday += int(measurement.measurement)
         
-        target_since_yesterday = int(today_consumption)/combined_power_consumption_yesterday
+        try:
+            target_since_yesterday = int(today_consumption)/combined_power_consumption_yesterday
+        except ZeroDivisionError:
+            target_since_yesterday = 0
         percentage_value = round(target_since_yesterday * 100, 2)
         return str(percentage_value)
 
@@ -168,3 +174,20 @@ def get_todays_consumption(request):
 
 
     return Response(data, status=200)
+
+@api_view(['GET'])
+def get_devices(request):
+    devices = ConnectedDevices.objects.all()
+    serializer = ConnectedDevicesSerializer(devices, many=True)
+
+    return Response(serializer.data, status=200)
+
+@api_view(['POST'])
+def post_devices(request):
+    ip = request.data.get('ip')
+    port  = request.data.get('port')
+
+    device = ConnectedDevices(ip=ip, port=port)
+    device.save()
+
+    return Response(status=200)
