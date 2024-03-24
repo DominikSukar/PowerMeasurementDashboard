@@ -32,7 +32,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
-
+  backend:
+    container_name: backend_django
+    build:
+     context: ./backend
+     dockerfile: Dockerfile
+    ports:
+    - "8000:8000"
   emulator1:
     container_name: emulator_flask_1
     build: 
