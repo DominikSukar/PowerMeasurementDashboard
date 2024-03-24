@@ -9,11 +9,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost']
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5174',
+    'http://localhost:5173',
     'http://localhost',
 ]
-
-USE_TZ = False
 
 
 # Application definition
@@ -101,7 +99,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

@@ -1,4 +1,4 @@
-version: '2.0'
+version: '2.2'
 
 services:
   postgresql:
@@ -33,13 +33,22 @@ services:
     ports:
       - "80:80"
 
-  emulator:
-    container_name: emulator_flask
-    build: ./emulator
+  emulator1:
+    container_name: emulator_flask_1
+    build: 
+      context: ./emulator
+      args:
+        - PORT=5000
     ports:
      - "5000:5000"
-    volumes:
-    - ./emulator:/app
+  emulator2:
+    container_name: emulator_flask_2
+    build: 
+      context: ./emulator
+      args:
+        - PORT=5001
+    ports:
+     - "5001:5001"
 volumes:
   postgresql_data:
     driver: local

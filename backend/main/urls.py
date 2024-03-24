@@ -4,4 +4,6 @@ from . import views
 urlpatterns = [
     path('get_latest_data/', views.get_latest_data, name='get_latest_data'),
     path('get_circuit_data/', views.get_circuit_data, name='get_circuit_data'),
+    path('get_dashboard_data/', views.get_dashboard_data, name='get_dashboard_data'),
+    path('get_todays_consumption/', views.get_todays_consumption, name='get_todays_consumption'),
 ]
