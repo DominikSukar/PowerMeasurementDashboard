@@ -1,10 +1,12 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useContext} from 'react'
 import axios from 'axios'
 
+import TokenContext from '../../authProvider';
 import Card from './Card'
 import Chart from './Chart'
 
 const Home = () => {
+  const {accessToken} = useContext(TokenContext)
   const [data, setData] = useState({
     current_power_consumption: null,
     max_consumption_today: null,
@@ -15,7 +17,7 @@ const Home = () => {
   useEffect(() => {
 
   const fetchData = async () => {
-    axios.get('http://localhost:8000/get_dashboard_data/')
+    axios.get('http://localhost:8000/get_dashboard_data/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
     .then(function (response) {
       setData(response.data);
     })

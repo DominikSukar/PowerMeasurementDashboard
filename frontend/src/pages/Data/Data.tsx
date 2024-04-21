@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import TokenContext from '../../authProvider';
 
 import StationCard from './StationCard';
 
@@ -15,11 +16,12 @@ interface PowerStation {
 }
 
 const Measurements = () => {
+  const {accessToken} = useContext(TokenContext)
   const [data, setData] = useState<PowerStation|null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
-    axios.get('http://localhost:8000/get_latest_data/')
+    axios.get('http://localhost:8000/get_latest_data/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
     .then(function (response) {
       setData(response.data);
     })

@@ -1,6 +1,7 @@
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import TokenContext from '../../authProvider';
 
 import {
   Chart as ChartJS,
@@ -39,12 +40,12 @@ export const options = {
 };
 
 const Chart = () => {
+    const {accessToken} = useContext(TokenContext)
     const [data, setChartData] = useState<ChartData<"line", any, any>|null>(null)
     useEffect(() => {
         const get_data = async () => {
-            axios.get('http://localhost:8000/get_todays_consumption/')
+            axios.get('http://localhost:8000/get_todays_consumption/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
            .then((response) => {
-                console.log(response.data);
                 let labels = (response.data as { date: string }[]).map(item => item.date);
                 let values: number[] = (response.data as {value: string}[]).map(item => Number(item.value));
                 let data: ChartData<"line", any, any> = {
@@ -58,7 +59,6 @@ const Chart = () => {
                     }
                   ]
                 };
-                console.log("Data:", data)
                 setChartData(data);
               })
            .catch((error) => {

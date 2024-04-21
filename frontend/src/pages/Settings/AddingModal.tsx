@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import Modal from 'react-modal'
 import axios from 'axios'
 
 import Button from '../../components/Button'
+import TokenContext from '../../authProvider';
 
 
 const AddingModal = ({modalIsOpen, setIsOpen}:{modalIsOpen:boolean; setIsOpen:Function}) => {
+  const {accessToken} = useContext(TokenContext)
   const [formData, setFormData] = useState({
     ip: '',
     port: ''
@@ -31,7 +33,7 @@ const AddingModal = ({modalIsOpen, setIsOpen}:{modalIsOpen:boolean; setIsOpen:Fu
       setPortProvided(false);
     }
     if (ipProvided && portProvided) {
-      axios.post('http://localhost:8000/post_devices/', formData)
+      axios.post('http://localhost:8000/post_devices/', formData, { headers: {"Authorization" : `Bearer ${accessToken}`} })
       .then(function (response) {
         console.log(response);
       })

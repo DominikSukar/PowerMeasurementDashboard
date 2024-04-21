@@ -1,8 +1,9 @@
 import 'react-data-grid/lib/styles.css';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
 
 import DataGrid from 'react-data-grid';
+import TokenContext from '../../authProvider';
 
 const columns = [
   { key: 'id', name: 'ID' },
@@ -11,6 +12,8 @@ const columns = [
 ];
 
 function Datagrid() {
+  const {accessToken} = useContext(TokenContext)
+
 	const [rows, setRows] = useState([
 		{ id: 0, ip: 'localhost', port: '5000' },
 		{ id: 1, ip: 'localhost', port: '5001' },
@@ -19,7 +22,7 @@ function Datagrid() {
 
 	useEffect(() => {
     const fetchData = async () => {
-    axios.get('http://localhost:8000/get_devices/')
+    axios.get('http://localhost:8000/get_devices/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
     .then(function (response) {
       setRows(response.data);
     })

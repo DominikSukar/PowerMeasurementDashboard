@@ -2,7 +2,7 @@ import { ReactNode, createContext, useState, Dispatch, SetStateAction } from 're
 
 interface TokenContextType {
     accessToken: string;
-    setAccessToken: Dispatch<SetStateAction<string>>;
+    setAccessToken: Dispatch<SetStateAction<string|undefined>>;
   }
 
 const TokenContext = createContext<TokenContextType>({
@@ -11,10 +11,14 @@ const TokenContext = createContext<TokenContextType>({
   });
 
 export const TokenProvider = ({children}: {children: ReactNode}) => {
-  const [accessToken, setAccessToken] = useState("0000");
+  const [accessToken, setAccessToken] = useState<string | undefined>("0000");
+
+  const updateAccessToken: TokenContextType['setAccessToken'] = (newToken) => {
+    setAccessToken(newToken);
+  };
 
   return (
-    <TokenContext.Provider value={{ accessToken, setAccessToken }}>
+    <TokenContext.Provider value={{ accessToken: accessToken || "", setAccessToken: updateAccessToken  }}>
       {children}
     </TokenContext.Provider>
   );

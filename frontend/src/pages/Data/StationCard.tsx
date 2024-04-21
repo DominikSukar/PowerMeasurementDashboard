@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
 import Chart from './Chart';
 import { ChartData } from 'chart.js';
+import TokenContext from '../../authProvider';
 
 import {getCurrentDateTimeString, getTodayDateTimeString} from '../../scripts/dates'
 
@@ -13,6 +14,7 @@ interface Measurement {
 }
 
 const StationCard = ({powerStation, measurements}: {powerStation: string, measurements: Measurement[]}) => {
+    const {accessToken} = useContext(TokenContext)
     const [modalIsOpen, setIsOpen] = useState(false);
     const [chartData, setChartData] = useState<ChartData<"line", any, any>|null>(null);
   
@@ -20,9 +22,8 @@ const StationCard = ({powerStation, measurements}: {powerStation: string, measur
       const date_to = getCurrentDateTimeString();
       const date_from = getTodayDateTimeString();
       axios.get('http://localhost:8000/get_circuit_data/?powerstation=' + powerStation + '&circuit=' + circuit + 
-      '&date_from=' + date_from + '&date_to=' + date_to)
+      '&date_from=' + date_from + '&date_to=' + date_to, { headers: {"Authorization" : `Bearer ${accessToken}`} })
      .then((response) => {
-          console.log(response.data);
           setIsOpen(true);
           let labels = (response.data as { date: string }[]).map(item => item.date);
           let values: number[] = (response.data as {value: string}[]).map(item => Number(item.value));
@@ -37,7 +38,6 @@ const StationCard = ({powerStation, measurements}: {powerStation: string, measur
               }
             ]
           };
-          console.log("Data:", data)
           setChartData(data);
         })
      .catch((error) => {

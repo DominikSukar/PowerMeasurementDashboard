@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 
 import Navbar from './components/Navbar'
 import Header from './components/Header'
@@ -13,13 +13,16 @@ import Keycloak from "keycloak-js";
 
 import LoadingScreen from "./assets/LoadingScreen.jpg"
 
+import TokenContext from './authProvider'
+
 
 function App() {
+  const { setAccessToken } = useContext(TokenContext);
   const [keycloak, setKeycloak] = useState<Keycloak|null>(null);
   
   useEffect(() => {
     let initOptions = {
-      url: "http://auth-keycloak:8080",
+      url: "http://localhost:8080",
       realm: "PMD",
       clientId: "frontend-1",
       onLoad: "login-required",
@@ -32,9 +35,10 @@ function App() {
         window.location.reload();
       } else {
         setKeycloak(kc);
+        setAccessToken(kc.token);
+        console.log("Token:", kc.token);
       }
     }).catch(error => {
-      console.log(kc);
       console.error("Authentication Failed", error);
     });
     
@@ -43,7 +47,7 @@ function App() {
         kc.logout();
       }
     };
-  }, []);
+  }, [setAccessToken]);
   
   if (!keycloak) {
     return (<div className="overflow-hidden h-screen w-screen">
