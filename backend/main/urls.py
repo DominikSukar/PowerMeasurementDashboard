@@ -7,5 +7,6 @@ urlpatterns = [
     path('get_dashboard_data/', views.get_dashboard_data, name='get_dashboard_data'),
     path('get_todays_consumption/', views.get_todays_consumption, name='get_todays_consumption'),
     path('get_devices/', views.get_devices, name='get_devices'),
-    path('post_devices/', views.post_devices, name='post_devices')
+    path('post_devices/', views.post_devices, name='post_devices'),
+    path('delete_data/', views.delete_data, name='delete_data')
 ]

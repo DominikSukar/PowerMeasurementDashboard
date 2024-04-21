@@ -13,14 +13,21 @@ from urllib3.exceptions import MaxRetryError
 
 from .serializers import ConnectedDevicesSerializer
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def get_measurements():
-    try:
-        data = requests.get("http://emulator_flask_1:5000").json()
-    except MaxRetryError:
-        print("Host doesn't respond")
+    devices = ConnectedDevices.objects.all()
+    ip_addresses = [f"{device.ip}:{device.port}" for device in devices]
+    for ip_address in ip_addresses:
+        try:
+            data = requests.get(f"http://{ip_address}").json()
+        except MaxRetryError:
+            logger.error("Host doesn't respond")
 
-    insert_data(data)
+        insert_data(data)
     
 def insert_data(data: list) -> None:
     for data_ in data:
@@ -30,7 +37,7 @@ def insert_data(data: list) -> None:
 
         power_station_object, ps_created = PowerStations.objects.get_or_create(name=power_station_name)
         if ps_created:
-            print(f"New power station created {power_station_name}")
+            logger.info(f"New power station created {power_station_name}")
 
 
         for circuit in data_['measurements']:
@@ -40,7 +47,7 @@ def insert_data(data: list) -> None:
 
             circuit_object, c_created = Circuits.objects.get_or_create(circuit_name=circuit_name, power_station_id=power_station_object)
             if c_created:
-                print(f"New circuit created {circuit_name}, {power_station_name}")
+                logger.debug(f"New circuit created {circuit_name}, {power_station_name}")
             measurement_object = Measurements.objects.create(circuit_id=circuit_object, date=m_date, measurement=m_value)
 # API
 @api_view(['GET'])
@@ -187,7 +194,20 @@ def post_devices(request):
     ip = request.data.get('ip')
     port  = request.data.get('port')
 
-    device = ConnectedDevices(ip=ip, port=port)
-    device.save()
+    if ip and port:
+        device = ConnectedDevices(ip=ip, port=port)
+        device.save()
+    else:
+        return Response("Please provide both ip and port", status=400)
 
     return Response(status=200)
+
+@api_view(['DELETE'])
+def delete_data(request):
+    ConnectedDevices.objects.all().delete()
+    PowerStations.objects.all().delete()
+    Circuits.objects.all().delete() 
+    Measurements.objects.all().delete()
+
+    return Response(status=200)
+

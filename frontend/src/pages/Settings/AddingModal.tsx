@@ -40,6 +40,7 @@ const AddingModal = ({modalIsOpen, setIsOpen}:{modalIsOpen:boolean; setIsOpen:Fu
       .catch(function (error) {
         console.log(error);
       });
+      closeModal()
     }
   };
 
@@ -93,7 +94,7 @@ const AddingModal = ({modalIsOpen, setIsOpen}:{modalIsOpen:boolean; setIsOpen:Fu
               )}
             </div>
             <div className="flex justify-end">
-              <Button text="Submit" onClick={() => console.log(formData)}/>
+              <Button text="Submit"/>
             </div>
           </form>
       </Modal>

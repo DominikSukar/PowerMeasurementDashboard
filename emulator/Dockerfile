@@ -3,8 +3,6 @@ FROM python:3.13.0a5-slim-bullseye
 ARG PORT
 ENV PORT=${PORT}
 
-RUN echo PORT
-
 COPY ./requirements.txt /app/requirements.txt
 
 WORKDIR /app

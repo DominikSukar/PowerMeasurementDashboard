@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
 
 import DataGrid from 'react-data-grid';
+
 import TokenContext from '../../authProvider';
 
 const columns = [
@@ -35,7 +36,7 @@ function Datagrid() {
     return () => clearInterval(interval);
   }, [])
 
-  return <DataGrid columns={columns} rows={rows}/>
+  return <DataGrid className={"rdg-light"} columns={columns} rows={rows}/>
 }
 
 export default Datagrid;
