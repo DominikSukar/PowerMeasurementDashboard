@@ -21,7 +21,7 @@ const StationCard = ({powerStation, measurements}: {powerStation: string, measur
     function get_circuit_data(powerStation: string, circuit: string) {
       const date_to = getCurrentDateTimeString();
       const date_from = getTodayDateTimeString();
-      axios.get('http://localhost:8000/get_circuit_data/?powerstation=' + powerStation + '&circuit=' + circuit + 
+      axios.get('http://localhost:8000/circuit_data/?powerstation=' + powerStation + '&circuit=' + circuit + 
       '&date_from=' + date_from + '&date_to=' + date_to, { headers: {"Authorization" : `Bearer ${accessToken}`} })
      .then((response) => {
           setIsOpen(true);

@@ -23,7 +23,7 @@ function Datagrid() {
 
 	useEffect(() => {
     const fetchData = async () => {
-    axios.get('http://localhost:8000/get_devices/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
+    axios.get('http://localhost:8000/devices/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
     .then(function (response) {
       setRows(response.data);
     })

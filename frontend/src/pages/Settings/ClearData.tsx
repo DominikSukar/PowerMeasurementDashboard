@@ -9,7 +9,7 @@ export default function ClearData() {
   const {accessToken} = useContext(TokenContext)
 
   function RequestDataClearing() {
-    axios.delete('http://localhost:8000/delete_data/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
+    axios.delete('http://localhost:8000/devices/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
     .then(function (response) {
       console.log(response);
     })

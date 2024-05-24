@@ -33,7 +33,7 @@ const AddingModal = ({modalIsOpen, setIsOpen}:{modalIsOpen:boolean; setIsOpen:Fu
       setPortProvided(false);
     }
     if (ipProvided && portProvided) {
-      axios.post('http://localhost:8000/post_devices/', formData, { headers: {"Authorization" : `Bearer ${accessToken}`} })
+      axios.post('http://localhost:8000/devices/', formData, { headers: {"Authorization" : `Bearer ${accessToken}`} })
       .then(function (response) {
         console.log(response);
       })

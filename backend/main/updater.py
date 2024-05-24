@@ -1,6 +1,6 @@
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
-from .views import get_measurements
+from .utils import get_measurements
 
 def start():
 	scheduler = BackgroundScheduler()

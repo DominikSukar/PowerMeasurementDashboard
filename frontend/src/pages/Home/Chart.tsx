@@ -44,7 +44,7 @@ const Chart = () => {
     const [data, setChartData] = useState<ChartData<"line", any, any>|null>(null)
     useEffect(() => {
         const get_data = async () => {
-            axios.get('http://localhost:8000/get_todays_consumption/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
+            axios.get('http://localhost:8000/todays_consumption/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
            .then((response) => {
                 let labels = (response.data as { date: string }[]).map(item => item.date);
                 let values: number[] = (response.data as {value: string}[]).map(item => Number(item.value));

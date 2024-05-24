@@ -17,7 +17,7 @@ const Home = () => {
   useEffect(() => {
 
   const fetchData = async () => {
-    axios.get('http://localhost:8000/get_dashboard_data/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
+    axios.get('http://localhost:8000/dashboard_data/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
     .then(function (response) {
       setData(response.data);
     })

@@ -21,7 +21,7 @@ const Measurements = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-    axios.get('http://localhost:8000/get_latest_data/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
+    axios.get('http://localhost:8000/latest_data/', { headers: {"Authorization" : `Bearer ${accessToken}`} })
     .then(function (response) {
       setData(response.data);
     })
